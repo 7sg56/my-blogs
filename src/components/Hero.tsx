@@ -1,6 +1,7 @@
 import { UIProvider } from "./UIProvider";
 import { Button } from "@nextui-org/react";
-import { motion } from "framer-motion"; // Note: accessing motion via framer-motion directly in separate component for client load
+import { motion } from "framer-motion";
+import Dither from "./react-bits/Dither";
 
 // Separate component for motion to allow client directive in Astro
 export const HeroContent = () => {
@@ -41,6 +42,15 @@ export const Hero = () => {
 
                 {/* Glow Effects */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-purple-900/20 blur-[120px] rounded-full pointer-events-none"></div>
+
+                <div className="absolute inset-0 opacity-50 mix-blend-screen pointer-events-none">
+                    <Dither
+                        waveSpeed={0.03}
+                        waveAmplitude={0.31}
+                        colorNum={7.7}
+                        waveColor={[0.5, 0.4, 0.4]}
+                    />
+                </div>
 
                 <HeroContent />
 

@@ -11,7 +11,7 @@ export const Navigation = () => {
                 maxWidth="xl"
             >
                 <NavbarBrand>
-                    <p className="font-bold text-inherit text-xl tracking-tighter">ANTIGRAVITY</p>
+                    <p className="font-bold text-inherit text-xl tracking-tighter">7sg56.xyz</p>
                 </NavbarBrand>
                 <NavbarContent className="hidden sm:flex gap-8" justify="center">
                     <NavbarItem>

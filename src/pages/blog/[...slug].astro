@@ -1,0 +1,79 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { Navigation } from "../../components/Navigation";
+import { Footer } from "../../components/Footer";
+import { Image } from "@nextui-org/react";
+
+export async function getStaticPaths() {
+    const posts = await getCollection("blog");
+    return posts.map((post) => ({
+        params: { slug: post.slug },
+        props: post,
+    }));
+}
+
+const post = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title} description={post.data.description}>
+    <Navigation client:load />
+
+    <main class="min-h-screen pt-24 pb-12">
+        <article class="max-w-3xl mx-auto px-4">
+            <div class="mb-8 text-center">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-sm"
+                >
+                    <span
+                        class="text-xs text-primary uppercase tracking-widest font-mono font-bold"
+                        >{post.data.category}</span
+                    >
+                </div>
+
+                <h1
+                    class="text-4xl md:text-5xl font-bold tracking-tighter mb-6 leading-tight"
+                >
+                    {post.data.title}
+                </h1>
+
+                <div
+                    class="text-neutral-400 text-sm mb-8 flex justify-center gap-4"
+                >
+                    <time datetime={post.data.pubDate.toISOString()}>
+                        {
+                            post.data.pubDate.toLocaleDateString("en-us", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                            })
+                        }
+                    </time>
+                    <span>&bull;</span>
+                    <span>7sg56</span>
+                </div>
+            </div>
+
+            {
+                post.data.heroImage && (
+                    <div class="rounded-xl overflow-hidden border border-white/10 mb-12 aspect-video">
+                        <img
+                            src={post.data.heroImage}
+                            alt={post.data.title}
+                            class="w-full h-full object-cover"
+                        />
+                    </div>
+                )
+            }
+
+            <div
+                class="prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-img:rounded-lg"
+            >
+                <Content />
+            </div>
+        </article>
+    </main>
+
+    <Footer client:visible />
+</Layout>

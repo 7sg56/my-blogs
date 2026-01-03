@@ -1,31 +1,23 @@
+import React from "react";
 import { Card, CardHeader, CardBody, CardFooter, Image, Button, Chip } from "@nextui-org/react";
 import { UIProvider } from "./UIProvider";
 
-const posts = [
-    {
-        title: "Zero Trust Architecture",
-        category: "Security",
-        date: "2024-03-15",
-        img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
-        excerpt: "Why the traditional perimeter is dead and identity is the new firewall."
-    },
-    {
-        title: "The Future of Encryption",
-        category: "Cryptography",
-        date: "2024-03-10",
-        img: "https://images.unsplash.com/photo-1558494949-ef2bb6ffa030?q=80&w=2070&auto=format&fit=crop",
-        excerpt: "Quantum computing is coming. Are your keys ready?"
-    },
-    {
-        title: "AI in Cyber Defense",
-        category: "Artificial Intelligence",
-        date: "2024-03-05",
-        img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1965&auto=format&fit=crop",
-        excerpt: "Automating the SOC with intelligent agents and predictive analysis."
-    }
-];
+interface BlogPost {
+    slug: string;
+    data: {
+        title: string;
+        description: string;
+        pubDate: Date;
+        heroImage?: string;
+        category: string;
+    };
+}
 
-export const BlogList = () => {
+interface BlogListProps {
+    posts: BlogPost[];
+}
+
+export const BlogList = ({ posts }: BlogListProps) => {
     return (
         <UIProvider>
             <section className="py-24 px-4 max-w-7xl mx-auto">
@@ -38,26 +30,36 @@ export const BlogList = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {posts.map((post, index) => (
-                        <Card key={index} className="bg-neutral-900/50 border border-white/10 hover:border-white/20 transition-all group" isPressable>
+                    {posts.map((post) => (
+                        <Card
+                            key={post.slug}
+                            as="a"
+                            href={`/blog/${post.slug}`}
+                            className="bg-neutral-900/50 border border-white/10 hover:border-white/20 transition-all group"
+                            isPressable
+                        >
                             <CardHeader className="absolute z-10 top-1 flex-col !items-start">
                                 <Chip size="sm" color="primary" variant="flat" className="text-xs uppercase font-bold tracking-wider mb-2">
-                                    {post.category}
+                                    {post.data.category}
                                 </Chip>
                             </CardHeader>
                             <Image
                                 removeWrapper
-                                alt={post.title}
+                                alt={post.data.title}
                                 className="z-0 w-full h-[240px] object-cover opacity-60 group-hover:opacity-80 transition-opacity"
-                                src={post.img}
+                                src={post.data.heroImage}
                             />
                             <CardBody className="p-5">
                                 <div className="flex justify-between items-center mb-2">
-                                    <span className="text-xs text-neutral-500">{post.date}</span>
+                                    <span className="text-xs text-neutral-500">
+                                        {new Date(post.data.pubDate).toLocaleDateString()}
+                                    </span>
                                 </div>
-                                <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{post.title}</h3>
-                                <p className="text-sm text-neutral-400 leading-relaxed">
-                                    {post.excerpt}
+                                <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                                    {post.data.title}
+                                </h3>
+                                <p className="text-sm text-neutral-400 leading-relaxed line-clamp-3">
+                                    {post.data.description}
                                 </p>
                             </CardBody>
                             <CardFooter className="px-5 pb-5 pt-0">
