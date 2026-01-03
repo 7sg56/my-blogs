@@ -1,0 +1,21 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { FloatingNav } from "../components/FloatingNav";
+import { Footer } from "../components/Footer";
+import { SearchableBlogList } from "../components/SearchableBlogList";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog")).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<Layout title="Blogs | 7sg56.xyz">
+    <FloatingNav client:load />
+
+    <main class="min-h-screen pt-24">
+        <SearchableBlogList client:load initialPosts={posts} />
+    </main>
+
+    <Footer client:visible />
+</Layout>

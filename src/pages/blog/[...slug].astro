@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { Navigation } from "../../components/Navigation";
+import { FloatingNav } from "../../components/FloatingNav";
 import { Footer } from "../../components/Footer";
 import { Image } from "@nextui-org/react";
 
@@ -18,7 +18,7 @@ const { Content } = await post.render();
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
-    <Navigation client:load />
+    <FloatingNav client:load />
 
     <main class="min-h-screen pt-24 pb-12">
         <article class="max-w-3xl mx-auto px-4">
