@@ -1,0 +1,41 @@
+@import "@fontsource/inter";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 10 10 10;
+    --foreground: 250 250 250;
+  }
+
+  html {
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth; /* Fallback */
+  }
+
+  body {
+    @apply antialiased overflow-x-hidden;
+  }
+  
+  /* Selection color */
+  ::selection {
+    @apply bg-white/20 text-white;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-white to-neutral-500;
+  }
+  
+  .glass-panel {
+    @apply bg-white/5 border border-white/10 backdrop-blur-md;
+  }
+}

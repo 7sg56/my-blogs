@@ -1,0 +1,21 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Navigation } from "../components/Navigation";
+import { Hero } from "../components/Hero";
+import { BlogList } from "../components/BlogList";
+---
+
+<Layout title="Antigravity | Secure Your Future">
+	<Navigation client:load />
+
+	<main>
+		<Hero client:load />
+		<BlogList client:visible />
+	</main>
+
+	<footer
+		class="border-t border-white/10 bg-black py-12 text-center text-neutral-500 text-sm"
+	>
+		<p>&copy; 2024 Antigravity. All rights reserved.</p>
+	</footer>
+</Layout>
