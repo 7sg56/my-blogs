@@ -1,9 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import { FloatingNav } from "../../components/FloatingNav";
 import { Footer } from "../../components/Footer";
-import { Image } from "@nextui-org/react";
 
 export async function getStaticPaths() {
     const posts = await getCollection("blog");
@@ -18,8 +16,6 @@ const { Content } = await post.render();
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
-    <FloatingNav client:load />
-
     <main class="min-h-screen pt-24 pb-12">
         <article class="max-w-3xl mx-auto px-4">
             <div class="mb-8 text-center">

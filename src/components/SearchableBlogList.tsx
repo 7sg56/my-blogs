@@ -15,13 +15,13 @@ interface BlogPost {
 }
 
 interface SearchableBlogListProps {
-    initialPosts: BlogPost[];
+    posts: BlogPost[];
 }
 
-export const SearchableBlogList = ({ initialPosts }: SearchableBlogListProps) => {
+export const SearchableBlogList = ({ posts }: SearchableBlogListProps) => {
     const [query, setQuery] = useState("");
 
-    const filteredPosts = initialPosts.filter(post =>
+    const filteredPosts = posts.filter(post =>
         post.data.title.toLowerCase().includes(query.toLowerCase()) ||
         post.data.description.toLowerCase().includes(query.toLowerCase()) ||
         post.data.category.toLowerCase().includes(query.toLowerCase())

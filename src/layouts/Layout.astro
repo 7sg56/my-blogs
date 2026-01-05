@@ -6,6 +6,8 @@ interface Props {
     description?: string;
 }
 
+import { Navbar } from "../components/Navbar";
+
 const { title, description = "A professional dark-themed blog." } = Astro.props;
 ---
 
@@ -22,6 +24,10 @@ const { title, description = "A professional dark-themed blog." } = Astro.props;
     <body
         class="bg-neutral-950 text-white selection:bg-neutral-800 selection:text-white"
     >
+        <div transition:persist>
+            <Navbar client:load />
+        </div>
+
         <div id="smooth-wrapper">
             <div id="smooth-content">
                 <slot />
@@ -31,23 +37,52 @@ const { title, description = "A professional dark-themed blog." } = Astro.props;
         <script>
             import Lenis from "lenis";
 
-            const lenis = new Lenis({
-                duration: 1.2,
-                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                orientation: "vertical",
-                gestureOrientation: "vertical",
-                smoothWheel: true,
-            });
+            type LenisInstance = Lenis;
 
-            function raf(time: number) {
-                lenis.raf(time);
-                requestAnimationFrame(raf);
+            declare global {
+                interface Window {
+                    lenis: LenisInstance;
+                }
             }
 
-            requestAnimationFrame(raf);
+            let lenis: LenisInstance;
 
-            // Expose lenis to window for other components to use
-            (window as any).lenis = lenis;
+            function initLenis() {
+                lenis = new Lenis({
+                    duration: 1.2,
+                    easing: (t: number) =>
+                        Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    orientation: "vertical",
+                    gestureOrientation: "vertical",
+                    smoothWheel: true,
+                });
+
+                console.log("Lenis initialized");
+
+                function raf(time: number) {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                }
+
+                requestAnimationFrame(raf);
+
+                // Expose to window
+                window.lenis = lenis;
+            }
+
+            // Init on first load
+            initLenis();
+
+            // Re-init on page swap if needed or just ensure it persists.
+            // Lenis usually attaches to window/document, so typical ViewTransitions might not destroy it,
+            // but the scroll position reset might fight it.
+            // Let's hook into before-preparation to stop it if needed, or after-swap to reset.
+
+            document.addEventListener("astro:page-load", () => {
+                // If using ViewTransitions, this runs once on initial load (if listener added early enough)
+                // and after every navigation.
+                // However, we already called initLenis() inline.
+            });
         </script>
     </body>
 </html>
